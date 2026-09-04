@@ -1,0 +1,37 @@
+import { z } from 'zod';
+
+export const createJornadaSchema = z.object({
+  nombre: z.string().min(1).max(255),
+  sede: z.string().min(1).max(255),
+  fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato de fecha: YYYY-MM-DD'),
+  cupoTotal: z.number().int().min(0),
+  activa: z.boolean().optional().default(true),
+});
+
+export const updateJornadaSchema = z
+  .object({
+    nombre: z.string().min(1).max(255).optional(),
+    sede: z.string().min(1).max(255).optional(),
+    fecha: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
+    cupoTotal: z.number().int().min(0).optional(),
+    activa: z.boolean().optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'Debe enviar al menos un campo para actualizar',
+  });
+
+export const listJornadasQuerySchema = z.object({
+  estado: z.enum(['activa', 'inactiva']).optional(),
+  fecha: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  filtroCupo: z.enum(['todas', 'con_cupo', 'sin_cupo']).optional(),
+});
+
+export const jornadaIdParamSchema = z.object({
+  id: z.string().uuid(),
+});
