@@ -1,4 +1,4 @@
-import { getClient, AppError, isPastDate } from '@horary/shared';
+import { getClient, AppError } from '@horary/shared';
 
 export async function createInscripcion(jornadaId, data) {
   const client = await getClient();
@@ -7,7 +7,8 @@ export async function createInscripcion(jornadaId, data) {
     await client.query('BEGIN');
 
     const { rows: jornadaRows } = await client.query(
-      `SELECT id, fecha, cupo_total, cupo_ocupado, activa
+      `SELECT id, fecha, cupo_total, cupo_ocupado, activa,
+              (fecha < CURRENT_DATE) AS fecha_cumplida
        FROM jornadas
        WHERE id = $1
        FOR UPDATE`,
@@ -24,7 +25,7 @@ export async function createInscripcion(jornadaId, data) {
       throw new AppError('No se puede inscribir a una jornada inactiva', 409, 'JORNADA_INACTIVA');
     }
 
-    if (isPastDate(jornada.fecha)) {
+    if (jornada.fecha_cumplida) {
       throw new AppError(
         'No se puede inscribir a una jornada con fecha ya cumplida',
         409,
