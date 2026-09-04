@@ -1,6 +1,6 @@
 import { pool, AppError } from '@horary/shared';
 
-export async function listJornadas({ estado, fecha, filtroCupo }) {
+export async function listJornadas({ estado, fecha, fechaDesde, fechaHasta, filtroCupo }) {
   const conditions = [];
   const params = [];
 
@@ -13,6 +13,16 @@ export async function listJornadas({ estado, fecha, filtroCupo }) {
   if (fecha) {
     params.push(fecha);
     conditions.push(`fecha = $${params.length}`);
+  }
+
+  if (fechaDesde) {
+    params.push(fechaDesde);
+    conditions.push(`fecha >= $${params.length}`);
+  }
+
+  if (fechaHasta) {
+    params.push(fechaHasta);
+    conditions.push(`fecha <= $${params.length}`);
   }
 
   if (filtroCupo === 'con_cupo') {

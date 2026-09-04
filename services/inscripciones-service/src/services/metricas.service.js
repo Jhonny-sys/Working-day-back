@@ -6,7 +6,10 @@ export async function getMetricas() {
   );
 
   const { rows: inscripciones } = await pool.query(
-    `SELECT COUNT(*)::int AS total FROM inscripciones WHERE estado = 'CONFIRMADA'`
+    `SELECT COUNT(*)::int AS total
+     FROM inscripciones i
+     INNER JOIN jornadas j ON j.id = i.jornada_id
+     WHERE i.estado = 'CONFIRMADA' AND j.activa = TRUE`
   );
 
   const { rows: cupos } = await pool.query(
@@ -18,8 +21,9 @@ export async function getMetricas() {
   );
 
   const { rows: ultima } = await pool.query(
-    `SELECT created_at FROM inscripciones
-     WHERE estado = 'CONFIRMADA'
+    `SELECT i.created_at FROM inscripciones i
+     INNER JOIN jornadas j ON j.id = i.jornada_id
+     WHERE i.estado = 'CONFIRMADA' AND j.activa = TRUE
      ORDER BY created_at DESC
      LIMIT 1`
   );
