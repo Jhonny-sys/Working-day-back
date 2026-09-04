@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const createJornadaSchema = z.object({
-  nombre: z.string().min(1).max(255),
-  sede: z.string().min(1).max(255),
+  nombre: z.string().trim().min(1).max(100),
+  sede: z.string().trim().min(1).max(100),
   fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato de fecha: YYYY-MM-DD'),
   cupoTotal: z.number().int().min(0),
   activa: z.boolean().optional().default(true),
@@ -10,8 +10,8 @@ export const createJornadaSchema = z.object({
 
 export const updateJornadaSchema = z
   .object({
-    nombre: z.string().min(1).max(255).optional(),
-    sede: z.string().min(1).max(255).optional(),
+    nombre: z.string().trim().min(1).max(100).optional(),
+    sede: z.string().trim().min(1).max(100).optional(),
     fecha: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/)

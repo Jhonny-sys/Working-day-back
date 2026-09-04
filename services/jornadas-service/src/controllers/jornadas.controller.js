@@ -1,11 +1,12 @@
 import * as service from '../services/jornadas.service.js';
 
 function mapJornada(row) {
+  const fecha = row.fecha instanceof Date ? row.fecha.toISOString().slice(0, 10) : String(row.fecha).slice(0, 10);
   return {
     id: row.id,
     nombre: row.nombre,
     sede: row.sede,
-    fecha: row.fecha,
+    fecha,
     cupoTotal: row.cupo_total,
     cupoOcupado: row.cupo_ocupado,
     cupoDisponible: row.cupo_total - row.cupo_ocupado,

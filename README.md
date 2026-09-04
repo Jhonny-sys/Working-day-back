@@ -33,7 +33,7 @@ Frontend, en otra terminal:
 
 ```bash
 cd Horary-front
-cp .env.example .env.local
+printf 'NEXT_PUBLIC_API_URL=http://localhost:3000\n' > .env.local
 npm install
 npm run dev
 ```

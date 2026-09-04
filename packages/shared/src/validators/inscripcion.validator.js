@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const createInscripcionSchema = z.object({
-  nombreCompleto: z.string().min(1).max(255),
-  tipoDocumento: z.string().min(1).max(20),
-  numeroDocumento: z.string().min(1).max(50),
-  correo: z.string().email().max(255),
+  nombreCompleto: z.string().trim().min(1).max(100),
+  tipoDocumento: z.string().trim().min(1).max(100),
+  numeroDocumento: z.string().trim().min(1).max(100),
+  correo: z.string().trim().email().max(100),
 });
 
 export const inscripcionIdParamSchema = z.object({
