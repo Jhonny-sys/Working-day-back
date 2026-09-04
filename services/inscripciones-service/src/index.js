@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { errorHandler } from '@horary/shared';
 import inscripcionesRoutes from './routes/inscripciones.routes.js';
 import metricasRoutes from './routes/metricas.routes.js';
+import tiposDocumentoRoutes from './routes/tipos-documento.routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
@@ -20,6 +21,7 @@ app.get('/health', (_req, res) => res.json({ service: 'inscripciones', status: '
 app.use('/jornadas', inscripcionesRoutes.jornadasRouter);
 app.use('/inscripciones', inscripcionesRoutes.inscripcionesRouter);
 app.use('/metricas', metricasRoutes);
+app.use('/tipos-documento', tiposDocumentoRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {

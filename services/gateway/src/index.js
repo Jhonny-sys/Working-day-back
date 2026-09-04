@@ -33,6 +33,7 @@ app.use('/api/jornadas/:id/inscripciones', createProxy(INSCRIPCIONES_URL));
 app.use('/api/jornadas', createProxy(JORNADAS_URL));
 app.use('/api/inscripciones', createProxy(INSCRIPCIONES_URL));
 app.use('/api/metricas', createProxy(INSCRIPCIONES_URL));
+app.use('/api/tipos-documento', createProxy(INSCRIPCIONES_URL));
 
 app.use((_req, res) => {
   res.status(404).json({ error: { message: 'Ruta no encontrada', code: 'NOT_FOUND' } });
