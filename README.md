@@ -33,7 +33,7 @@ Frontend, en otra terminal:
 
 ```bash
 cd Horary-front
-printf 'NEXT_PUBLIC_API_URL=http://localhost:3000\n' > .env.local
+cp .env.example .env.local
 npm install
 npm run dev
 ```
@@ -41,6 +41,27 @@ npm run dev
 El backend levanta PostgreSQL, aplica migraciones y arranca los microservicios. El frontend arranca Next.js por separado. URLs: panel `http://localhost:3003`, gateway `http://localhost:3000/health`.
 
 Para detener PostgreSQL: `npm run docker:down`.
+
+## Verificacion de concurrencia
+
+El control de cupos se garantiza en `services/inscripciones-service`: cada inscripcion abre una transaccion y bloquea la fila de la jornada con `SELECT ... FOR UPDATE`. La validacion del cupo, el `INSERT` y el incremento de `cupo_ocupado` ocurren dentro de esa misma transaccion.
+
+Con PostgreSQL levantado y las variables de `Horary-back/.env` configuradas, ejecute:
+
+```bash
+npm run verify:concurrency
+```
+
+El script trabaja directamente contra PostgreSQL, sin depender del Gateway ni de los microservicios. Crea una jornada persistente con 3 cupos y lanza 10 transacciones de inscripcion en paralelo. Debe imprimir exactamente:
+
+```text
+Confirmadas: 3
+Rechazadas: 7
+Cupo ocupado final: 3/3
+VERIFICACIÓN EXITOSA: 3 confirmadas, 7 rechazadas y 3 cupos ocupados.
+```
+
+La jornada y sus inscripciones permanecen en PostgreSQL. El script imprime el ID de la jornada para consultarla posteriormente mediante el API o directamente en la base de datos.
 
 ## Variables de entorno
 

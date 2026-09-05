@@ -4,15 +4,16 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { env } from '@horary/shared';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const app = express();
-const PORT = process.env.GATEWAY_PORT || 3000;
+const PORT = env.gateway.port;
 
-const JORNADAS_URL = process.env.JORNADAS_SERVICE_URL || 'http://localhost:3001';
-const INSCRIPCIONES_URL = process.env.INSCRIPCIONES_SERVICE_URL || 'http://localhost:3002';
+const JORNADAS_URL = env.gateway.jornadasUrl;
+const INSCRIPCIONES_URL = env.gateway.inscripcionesUrl;
 
 app.use(cors());
 

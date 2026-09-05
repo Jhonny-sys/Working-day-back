@@ -3,14 +3,14 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { errorHandler } from '@horary/shared';
+import { env, errorHandler } from '@horary/shared';
 import jornadasRoutes from './routes/jornadas.routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const app = express();
-const PORT = process.env.JORNADAS_SERVICE_PORT || 3001;
+const PORT = env.jornadas.port;
 
 app.use(cors());
 app.use(express.json());

@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { errorHandler } from '@horary/shared';
+import { env, errorHandler } from '@horary/shared';
 import inscripcionesRoutes from './routes/inscripciones.routes.js';
 import metricasRoutes from './routes/metricas.routes.js';
 import tiposDocumentoRoutes from './routes/tipos-documento.routes.js';
@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const app = express();
-const PORT = process.env.INSCRIPCIONES_SERVICE_PORT || 3002;
+const PORT = env.inscripciones.port;
 
 app.use(cors());
 app.use(express.json());
