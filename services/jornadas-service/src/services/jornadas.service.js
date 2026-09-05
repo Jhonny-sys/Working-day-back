@@ -73,7 +73,7 @@ export async function updateJornada(id, data) {
 
   if (cupoTotal < current.cupo_ocupado) {
     throw new AppError(
-      `No se puede reducir el cupo total por debajo del cupo ocupado (${current.cupo_ocupado})`,
+      `No se puede reducir el cupo total por debajo del cupo ya ocupado (${current.cupo_ocupado}).`,
       400,
       'CUPO_INVALIDO'
     );
